@@ -54,11 +54,11 @@ streamlit run app/streamlit_app.py
 ## Repartition du travail
 
 | Membre | Role | Contributions principales |
-|--------|------|--------------------------|
-| Prenom NOM | Data Engineer | ... |
-| Prenom NOM | Data Scientist | ... |
-| Prenom NOM | AI Engineer | ... |
-| Prenom NOM | Frontend / DevOps | ... |
+|--------|------|---------------------------|
+| Prenom NOM | Data Engineer | Matthias Caro-becker      |
+| Prenom NOM | Data Scientist | Jimmy Ribeiro             |
+| Prenom NOM | AI Engineer | Mamoune Nidam             |
+| Prenom NOM | Frontend / DevOps | Inde Hadaoui              |
 
 ## Donnees
 
