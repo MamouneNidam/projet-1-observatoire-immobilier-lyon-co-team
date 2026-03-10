@@ -576,7 +576,7 @@ if page == "📊 Tableau de bord":
                                xaxis_title="€/m²", yaxis_title="Fréquence",
                                xaxis=dict(gridcolor="rgba(255,255,255,0.04)"),
                                yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
     with col_b:
         if pm2_vals and len(pm2_vals) >= 4:
@@ -620,7 +620,7 @@ if page == "📊 Tableau de bord":
                             xaxis_title="€/m²",
                             xaxis=dict(gridcolor="rgba(255,255,255,0.04)"),
                             yaxis=dict(gridcolor="rgba(0,0,0,0)"))
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
 
 # ─── PAGE : CARTE ─────────────────────────────────────────────────────────────
@@ -662,11 +662,11 @@ elif page == "🗺️ Carte des prix":
             paper_bgcolor="#111827",
             coloraxis_colorbar=dict(title="€/m²", tickfont=dict(color="#c8bfad"), title_font=dict(color="#c8bfad")),
         )
-        st.plotly_chart(fig_map, use_container_width=True)
+        st.plotly_chart(fig_map, width="stretch")
         st.dataframe(
             q_agg[["quartier", "prix_m2_moyen"]].rename(
                 columns={"quartier": "Quartier", "prix_m2_moyen": "€/m² moyen"}),
-            use_container_width=True, hide_index=True)
+            width="stretch", hide_index=True)
     else:
         st.info("Données quartier non disponibles.")
 
@@ -712,7 +712,7 @@ elif page == "📈 Tendances":
                 xaxis_title="Mois", yaxis_title="Prix moyen €/m²",
                 xaxis=dict(tickangle=45, gridcolor="rgba(255,255,255,0.04)"),
                 yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
-            st.plotly_chart(fig_trend, use_container_width=True)
+            st.plotly_chart(fig_trend, width="stretch")
             st.metric("Tendance mensuelle", f"{beta:+.1f} €/m²/mois")
 
     if "type_bien" in df_dvf.columns and "prix_m2" in df_dvf.columns:
@@ -730,7 +730,7 @@ elif page == "📈 Tendances":
             xaxis_title="Type de bien", yaxis_title="€/m²",
             xaxis=dict(gridcolor="rgba(255,255,255,0.04)"),
             yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
-        st.plotly_chart(fig_box, use_container_width=True)
+        st.plotly_chart(fig_box, width="stretch")
 
 
 # ─── PAGE : SCORING ───────────────────────────────────────────────────────────
@@ -784,7 +784,7 @@ elif page == "🔍 Scoring Opportunités":
             xaxis_title="Prix (€)", yaxis_title="Score opportunité",
             xaxis=dict(gridcolor="rgba(255,255,255,0.04)"),
             yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
-        st.plotly_chart(fig_sc, use_container_width=True)
+        st.plotly_chart(fig_sc, width="stretch")
 
 
 # ─── PAGE : STATS AVANCÉES ────────────────────────────────────────────────────
@@ -841,7 +841,7 @@ elif page == "⚙️ Stats avancées":
                     xaxis_title="Surface (m²)", yaxis_title="Prix (€)",
                     xaxis=dict(gridcolor="rgba(255,255,255,0.04)"),
                     yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
-                st.plotly_chart(fig_reg, use_container_width=True)
+                st.plotly_chart(fig_reg, width="stretch")
 
                 st.markdown("**🧮 Simulateur de prix**")
                 sim_surf = st.slider("Surface (m²)", 20, 200, 65)
