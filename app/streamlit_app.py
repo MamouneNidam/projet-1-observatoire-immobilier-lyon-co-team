@@ -561,7 +561,7 @@ if page == "📊 Tableau de bord":
             fig = go.Figure()
             fig.add_trace(go.Histogram(x=pm2_vals, nbinsx=50,
                                        marker_color=TEAL, opacity=0.85, name="DVF"))
-            if "prix_m2" in df_ann.columns:
+            if df_ann is not None and "prix_m2" in df_ann.columns:
                 fig.add_trace(go.Histogram(
                     x=df_ann["prix_m2"].dropna().tolist(),
                     nbinsx=40, marker_color=GOLD, opacity=0.65, name="Annonces"))
