@@ -45,3 +45,24 @@ def correlation(xs: list[float], ys: list[float]) -> float:
     if sd_x == 0 or sd_y == 0:
         return 0
     return covariance(xs, ys) / (sd_x * sd_y)
+
+
+def percentile(xs: list[float], p: float) -> float:
+    sorted_xs = sorted(xs)
+    idx = (len(sorted_xs) - 1) * p / 100
+    lo = int(math.floor(idx))
+    hi = int(math.ceil(idx))
+    if lo == hi:
+        return sorted_xs[lo]
+    return sorted_xs[lo] + (sorted_xs[hi] - sorted_xs[lo]) * (idx - lo)
+
+
+def describe(xs: list[float]) -> dict:
+    return {
+        "min": min(xs),
+        "max": max(xs),
+        "mean": mean(xs),
+        "median": median(xs),
+        "variance": variance(xs),
+        "std": standard_deviation(xs),
+    }
