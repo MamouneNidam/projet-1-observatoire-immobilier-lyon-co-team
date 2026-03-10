@@ -3,7 +3,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from analysis.stats import mean, median, variance, standard_deviation
+from analysis.stats import mean, median, variance, standard_deviation, covariance, correlation
 
 
 def test_mean_basic():
@@ -48,3 +48,31 @@ def test_standard_deviation_known():
 
 def test_standard_deviation_identical():
     assert standard_deviation([5, 5, 5, 5]) == 0.0
+
+
+def test_covariance_identical_series():
+    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+    assert abs(covariance(xs, xs) - variance(xs)) < 0.001
+
+
+def test_covariance_negative():
+    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+    ys = [5.0, 4.0, 3.0, 2.0, 1.0]
+    assert covariance(xs, ys) < 0
+
+
+def test_correlation_perfect_positive():
+    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+    assert abs(correlation(xs, xs) - 1.0) < 0.01
+
+
+def test_correlation_perfect_negative():
+    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+    ys = [5.0, 4.0, 3.0, 2.0, 1.0]
+    assert abs(correlation(xs, ys) - (-1.0)) < 0.01
+
+
+def test_correlation_zero_std():
+    xs = [1.0, 2.0, 3.0]
+    ys = [5.0, 5.0, 5.0]
+    assert correlation(xs, ys) == 0

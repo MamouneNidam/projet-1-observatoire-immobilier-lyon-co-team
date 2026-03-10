@@ -33,15 +33,15 @@ def standard_deviation(xs: list[float]) -> float:
 
 
 def covariance(xs: list[float], ys: list[float]) -> float:
-    """Retourne la covariance entre deux series."""
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez covariance() - voir Grus ch.5")
+    n = len(xs)
+    x_bar = mean(xs)
+    y_bar = mean(ys)
+    return sum((x - x_bar) * (y - y_bar) for x, y in zip(xs, ys)) / n
 
 
 def correlation(xs: list[float], ys: list[float]) -> float:
-    """
-    Retourne le coefficient de correlation de Pearson entre deux series.
-    Retourne 0 si l'une des series a un ecart-type nul.
-    """
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez correlation() - voir Grus ch.5")
+    sd_x = standard_deviation(xs)
+    sd_y = standard_deviation(ys)
+    if sd_x == 0 or sd_y == 0:
+        return 0
+    return covariance(xs, ys) / (sd_x * sd_y)
