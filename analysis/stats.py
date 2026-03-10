@@ -23,15 +23,13 @@ def median(xs: list[float]) -> float:
 
 
 def variance(xs: list[float]) -> float:
-    """Retourne la variance d'une liste de nombres."""
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez variance() - voir Grus ch.5")
+    n = len(xs)
+    x_bar = mean(xs)
+    return sum((x - x_bar) ** 2 for x in xs) / n
 
 
 def standard_deviation(xs: list[float]) -> float:
-    """Retourne l'ecart-type d'une liste de nombres."""
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez standard_deviation() - voir Grus ch.5")
+    return math.sqrt(variance(xs))
 
 
 def covariance(xs: list[float], ys: list[float]) -> float:

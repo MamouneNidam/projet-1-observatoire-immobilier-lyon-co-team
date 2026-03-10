@@ -3,7 +3,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from analysis.stats import mean, median
+from analysis.stats import mean, median, variance, standard_deviation
 
 
 def test_mean_basic():
@@ -32,3 +32,19 @@ def test_median_unsorted():
 
 def test_median_single():
     assert median([42]) == 42
+
+
+def test_variance_known():
+    assert abs(variance([2, 4, 4, 4, 5, 5, 7, 9]) - 4.0) < 0.1
+
+
+def test_variance_identical():
+    assert variance([5, 5, 5, 5]) == 0.0
+
+
+def test_standard_deviation_known():
+    assert abs(standard_deviation([2, 4, 4, 4, 5, 5, 7, 9]) - 2.0) < 0.1
+
+
+def test_standard_deviation_identical():
+    assert standard_deviation([5, 5, 5, 5]) == 0.0
