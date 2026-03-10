@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 
 from analysis.stats import (
     mean, median, variance, standard_deviation,
-    correlation
+    correlation, percentile, describe
 )
 from analysis.regression import least_squares_fit, predict, r_squared
 from analysis.scoring import opportunity_score

@@ -51,19 +51,27 @@ def classify(ratio: float) -> str:
 
 
 def opportunity_score(
-    announced_price: float,
-    surface: float,
-    alpha: float,
-    beta: float,
-    neighborhood_prices: list[float],
-    neighborhood_surfaces: list[float],
-) -> dict:
+    price_or_sqm: float,
+    market_values_or_surface: float | list[float],
+    alpha: float | None = None,
+    beta: float | None = None,
+    neighborhood_prices: list[float] | None = None,
+    neighborhood_surfaces: list[float] | None = None,
+) -> float | dict:
+    if isinstance(market_values_or_surface, list):
+        med = median(market_values_or_surface)
+        if med <= 0:
+            return 0.0
+        ratio = (price_or_sqm - med) / med
+        return max(0.0, min(100.0, round(100.0 * (1.0 - ratio), 1)))
+
+    surface = market_values_or_surface
     estimated = predict(alpha, beta, surface)
-    ratio = gap_ratio(announced_price, estimated)
+    ratio = gap_ratio(price_or_sqm, estimated)
     category = classify(ratio)
 
     med_sqm = neighborhood_median_sqm(neighborhood_prices, neighborhood_surfaces)
-    ann_sqm = price_per_sqm(announced_price, surface)
+    ann_sqm = price_per_sqm(price_or_sqm, surface)
 
     if med_sqm > 0:
         market_ratio = ann_sqm / med_sqm
