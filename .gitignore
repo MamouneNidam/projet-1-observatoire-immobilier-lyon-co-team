@@ -30,3 +30,6 @@ project/
 # Secrets
 .env
 .env.local
+
+data/raw/*
+!data/raw/.gitkeep
