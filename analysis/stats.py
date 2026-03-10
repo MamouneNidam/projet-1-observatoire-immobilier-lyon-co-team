@@ -10,15 +10,16 @@ import math
 
 
 def mean(xs: list[float]) -> float:
-    """Retourne la moyenne d'une liste de nombres."""
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez mean() - voir Grus ch.5")
+    return sum(xs) / len(xs)
 
 
 def median(xs: list[float]) -> float:
-    """Retourne la mediane d'une liste de nombres."""
-    # VOTRE CODE ICI
-    raise NotImplementedError("Implementez median() - voir Grus ch.5")
+    sorted_xs = sorted(xs)
+    n = len(sorted_xs)
+    mid = n // 2
+    if n % 2 == 1:
+        return sorted_xs[mid]
+    return (sorted_xs[mid - 1] + sorted_xs[mid]) / 2
 
 
 def variance(xs: list[float]) -> float:
