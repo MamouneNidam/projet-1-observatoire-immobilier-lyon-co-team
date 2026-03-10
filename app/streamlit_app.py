@@ -396,10 +396,12 @@ def load_dvf():
 
     df = pd.read_csv(dvf_path, low_memory=False)
     col_map = {}
+    prix_mapped = False
     for col in df.columns:
         lc = col.lower().replace(" ", "_")
-        if "prix" in lc or "valeur" in lc:
+        if not prix_mapped and ("valeur" in lc or lc == "prix"):
             col_map[col] = "prix"
+            prix_mapped = True
         elif "surface" in lc and "bati" in lc:
             col_map[col] = "surface"
         elif "commune" in lc or "nom_commune" in lc:
