@@ -33,69 +33,147 @@ st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  html, body, [class*="css"] {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background-color: #fafafa;
-    color: #1a1a2e;
+  :root {
+    --nd-bg: #fafafa;
+    --nd-surface: #ffffff;
+    --nd-border: #e5e7eb;
+    --nd-text: #1a1a2e;
+    --nd-text-secondary: #374151;
+    --nd-text-muted: #6b7280;
+    --nd-text-faint: #9ca3af;
+    --nd-hover: #f9fafb;
+    --nd-input-bg: #ffffff;
+    --nd-accent: #2563eb;
+    --nd-green-bg: #f0fdf4;
+    --nd-green: #16a34a;
+    --nd-green-border: #bbf7d0;
+    --nd-yellow-bg: #fffbeb;
+    --nd-yellow: #d97706;
+    --nd-yellow-border: #fde68a;
+    --nd-red-bg: #fef2f2;
+    --nd-red: #dc2626;
+    --nd-red-border: #fecaca;
+    --nd-info-bg: #eff6ff;
+    --nd-info: #1e40af;
+    --nd-info-border: #bfdbfe;
+    --nd-success-bg: #f0fdf4;
+    --nd-success: #166534;
+    --nd-success-border: #bbf7d0;
   }
 
-  h1, h2, h3 {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --nd-bg: #0f1117;
+      --nd-surface: #1a1c25;
+      --nd-border: #2d3040;
+      --nd-text: #e8e9ed;
+      --nd-text-secondary: #c4c7cf;
+      --nd-text-muted: #8b8fa3;
+      --nd-text-faint: #6b6f82;
+      --nd-hover: #22242e;
+      --nd-input-bg: #1a1c25;
+      --nd-accent: #4d8ef7;
+      --nd-green-bg: #0d2818;
+      --nd-green: #4ade80;
+      --nd-green-border: #166534;
+      --nd-yellow-bg: #271e08;
+      --nd-yellow: #fbbf24;
+      --nd-yellow-border: #92400e;
+      --nd-red-bg: #2a0f0f;
+      --nd-red: #f87171;
+      --nd-red-border: #991b1b;
+      --nd-info-bg: #0c1a33;
+      --nd-info: #93c5fd;
+      --nd-info-border: #1e3a5f;
+      --nd-success-bg: #0d2818;
+      --nd-success: #86efac;
+      --nd-success-border: #166534;
+    }
+  }
+
+  html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"],
+  [data-testid="stHeader"], .main, .main .block-container,
+  [data-testid="stAppViewBlockContainer"] {
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    color: var(--nd-text) !important;
+  }
+
+  .stApp, [data-testid="stAppViewContainer"], .main,
+  [data-testid="stAppViewBlockContainer"] {
+    background-color: var(--nd-bg) !important;
+  }
+
+  [data-testid="stHeader"] {
+    background-color: var(--nd-bg) !important;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-family: 'Inter', sans-serif !important;
-    color: #1a1a2e !important;
+    color: var(--nd-text) !important;
     font-weight: 700 !important;
   }
 
-  [data-testid="stSidebar"] {
-    background: #ffffff !important;
-    border-right: 1px solid #e5e7eb !important;
+  p, span, div, label, li {
+    color: var(--nd-text);
   }
-  [data-testid="stSidebar"] * {
-    color: #374151 !important;
+
+  section[data-testid="stSidebar"] {
+    background: var(--nd-surface) !important;
+    border-right: 1px solid var(--nd-border) !important;
   }
-  [data-testid="stSidebar"] hr {
-    border-color: #e5e7eb !important;
+  section[data-testid="stSidebar"] > div {
+    background: var(--nd-surface) !important;
   }
-  [data-testid="stSidebar"] .stSelectbox label,
-  [data-testid="stSidebar"] .stSlider label {
-    color: #6b7280 !important;
+  section[data-testid="stSidebar"] * {
+    color: var(--nd-text-secondary) !important;
+  }
+  section[data-testid="stSidebar"] hr {
+    border-color: var(--nd-border) !important;
+  }
+  section[data-testid="stSidebar"] .stSelectbox label,
+  section[data-testid="stSidebar"] .stSlider label {
+    color: var(--nd-text-muted) !important;
     font-size: 0.75rem !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
   }
-  [data-testid="stSidebar"] [data-baseweb="select"] > div,
-  [data-testid="stSidebar"] [data-baseweb="input"] > div {
-    background: #f9fafb !important;
-    border-color: #e5e7eb !important;
+
+  .stRadio > div {
+    gap: 0.2rem !important;
+  }
+  .stRadio label span {
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
   }
 
   .sidebar-brand {
     padding: 0.8rem 0 0.6rem 0;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--nd-border);
     margin-bottom: 1rem;
   }
   .sidebar-brand .logo-text {
     font-size: 1.15rem;
-    color: #1a1a2e !important;
+    color: var(--nd-text) !important;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
   .sidebar-brand .logo-sub {
     font-size: 0.7rem;
-    color: #6b7280 !important;
+    color: var(--nd-text-muted) !important;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-top: 2px;
   }
 
   .main .block-container {
-    background: #fafafa;
     padding-top: 1.5rem;
   }
 
   .hero {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--nd-surface);
+    border: 1px solid var(--nd-border);
     border-radius: 12px;
     padding: 2rem 2.4rem;
     margin-bottom: 1.5rem;
@@ -106,16 +184,16 @@ st.markdown("""
     letter-spacing: -0.02em !important;
   }
   .hero p {
-    color: #6b7280;
+    color: var(--nd-text-muted) !important;
     font-size: 0.9rem;
     margin: 0;
     line-height: 1.5;
   }
   .hero-badge {
     display: inline-block;
-    background: #f0fdf4;
-    color: #16a34a;
-    border: 1px solid #bbf7d0;
+    background: var(--nd-green-bg);
+    color: var(--nd-green) !important;
+    border: 1px solid var(--nd-green-border);
     border-radius: 6px;
     padding: 3px 10px;
     font-size: 0.7rem;
@@ -126,13 +204,13 @@ st.markdown("""
   }
 
   .kpi-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--nd-surface);
+    border: 1px solid var(--nd-border);
     border-radius: 10px;
     padding: 1.2rem 1.4rem;
   }
   .kpi-label {
-    color: #6b7280;
+    color: var(--nd-text-muted) !important;
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -140,64 +218,72 @@ st.markdown("""
     margin-bottom: 0.4rem;
   }
   .kpi-value {
-    color: #1a1a2e;
+    color: var(--nd-text) !important;
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
   }
   .kpi-sub {
-    color: #9ca3af;
+    color: var(--nd-text-faint) !important;
     font-size: 0.72rem;
     margin-top: 0.3rem;
   }
+  .kpi-desc {
+    color: var(--nd-text-muted) !important;
+    font-size: 0.68rem;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    border-top: 1px solid var(--nd-border);
+    padding-top: 0.4rem;
+  }
 
-  .score-high   { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; }
-  .score-medium { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; }
-  .score-low    { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; }
+  .score-high   { background: var(--nd-green-bg); color: var(--nd-green) !important; border: 1px solid var(--nd-green-border); border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; display: inline-block; }
+  .score-medium { background: var(--nd-yellow-bg); color: var(--nd-yellow) !important; border: 1px solid var(--nd-yellow-border); border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; display: inline-block; }
+  .score-low    { background: var(--nd-red-bg); color: var(--nd-red) !important; border: 1px solid var(--nd-red-border); border-radius: 6px; padding: 3px 10px; font-weight: 600; font-size: 0.8rem; display: inline-block; }
 
   .section-title {
     font-size: 1.1rem;
-    color: #1a1a2e !important;
+    color: var(--nd-text) !important;
     font-weight: 700;
     margin: 2rem 0 1rem 0;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #1a1a2e;
+    border-bottom: 2px solid var(--nd-border);
   }
 
   [data-testid="stDataFrame"] {
-    background: #ffffff !important;
+    background: var(--nd-surface) !important;
     border-radius: 8px;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid var(--nd-border) !important;
   }
 
   [data-testid="metric-container"] {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    background: var(--nd-surface) !important;
+    border: 1px solid var(--nd-border) !important;
+    border-radius: 10px !important;
     padding: 1rem;
   }
   [data-testid="metric-container"] label {
-    color: #6b7280 !important;
+    color: var(--nd-text-muted) !important;
     font-size: 0.72rem !important;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
   [data-testid="metric-container"] [data-testid="stMetricValue"] {
-    color: #1a1a2e !important;
+    color: var(--nd-text) !important;
   }
 
   [data-testid="stInfo"] {
-    background: #eff6ff !important;
-    border: 1px solid #bfdbfe !important;
-    color: #1e40af !important;
+    background: var(--nd-info-bg) !important;
+    border: 1px solid var(--nd-info-border) !important;
+    color: var(--nd-info) !important;
     border-radius: 8px;
   }
 
   [data-testid="stSuccess"] {
-    background: #f0fdf4 !important;
-    border: 1px solid #bbf7d0 !important;
-    color: #166534 !important;
+    background: var(--nd-success-bg) !important;
+    border: 1px solid var(--nd-success-border) !important;
+    color: var(--nd-success) !important;
     border-radius: 8px;
   }
 
@@ -205,42 +291,56 @@ st.markdown("""
     width: 100%;
     border-collapse: collapse;
     font-size: 0.85rem;
-    color: #374151;
+    color: var(--nd-text-secondary) !important;
   }
   th {
-    background: #f9fafb;
-    color: #6b7280;
+    background: var(--nd-hover) !important;
+    color: var(--nd-text-muted) !important;
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 10px 14px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--nd-border);
     font-weight: 600;
   }
   td {
     padding: 10px 14px;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--nd-border);
+    color: var(--nd-text-secondary) !important;
   }
-  tr:hover td { background: #f9fafb; }
+  tr:hover td { background: var(--nd-hover) !important; }
 
   .footer {
     text-align: center;
-    color: #9ca3af;
+    color: var(--nd-text-faint) !important;
     font-size: 0.7rem;
     margin-top: 3rem;
     padding-top: 1rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--nd-border);
     letter-spacing: 0.03em;
   }
 
   .ann-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--nd-surface);
+    border: 1px solid var(--nd-border);
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: 0.8rem;
   }
-  .ann-card:hover { border-color: #1a1a2e; }
+  .ann-card:hover { border-color: var(--nd-accent); }
+
+  [data-baseweb="select"] > div {
+    background: var(--nd-input-bg) !important;
+    border-color: var(--nd-border) !important;
+  }
+  [data-baseweb="input"] > div {
+    background: var(--nd-input-bg) !important;
+    border-color: var(--nd-border) !important;
+  }
+  .stSlider [data-testid="stTickBarMin"],
+  .stSlider [data-testid="stTickBarMax"] {
+    color: var(--nd-text-muted) !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 
@@ -248,17 +348,17 @@ st.markdown("""
 def _no_data_screen(message: str):
     st.markdown(f"""
     <div style="
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: var(--nd-surface);
+        border: 1px solid var(--nd-border);
         border-radius: 12px;
         padding: 3rem 2rem;
         text-align: center;
         margin: 2rem 0;
     ">
-      <div style="font-size: 1.3rem; color: #1a1a2e; font-weight: 700; margin-bottom: 0.6rem;">
+      <div style="font-size: 1.3rem; color: var(--nd-text); font-weight: 700; margin-bottom: 0.6rem;">
         Donnees en attente
       </div>
-      <div style="color: #6b7280; font-size: 0.9rem; max-width: 400px; margin: 0 auto; line-height: 1.6;">
+      <div style="color: var(--nd-text-muted); font-size: 0.9rem; max-width: 400px; margin: 0 auto; line-height: 1.6;">
         {message}
       </div>
     </div>
@@ -348,7 +448,7 @@ with st.sidebar:
     )
 
     st.divider()
-    st.markdown("<span style='color:#6b7280;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em'>Filtres</span>", unsafe_allow_html=True)
+    st.markdown("<span style='color:var(--nd-text-muted);font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em'>Filtres</span>", unsafe_allow_html=True)
 
     df_dvf_raw = load_dvf()
     df_ann_raw = load_annonces()
@@ -378,7 +478,7 @@ with st.sidebar:
     dvf_count = f"{len(df_dvf_raw):,}" if dvf_ok else "—"
     ann_count = f"{len(df_ann_raw):,}" if ann_ok else "—"
     st.markdown(
-        f"<small style='color:#9ca3af'>{dvf_count} transactions DVF<br>{ann_count} annonces actives</small>",
+        f"<small style='color:var(--nd-text-faint)'>{dvf_count} transactions DVF<br>{ann_count} annonces actives</small>",
         unsafe_allow_html=True
     )
 
@@ -407,11 +507,28 @@ BLUE   = "#2563eb"
 GREEN  = "#16a34a"
 COLORS = [BLUE, "#0891b2", "#7c3aed", "#db2777", "#ea580c", "#16a34a"]
 
-PLOTLY_LIGHT = dict(
-    template="plotly_white",
-    paper_bgcolor="#ffffff",
-    plot_bgcolor="#ffffff",
-    font=dict(color="#374151", family="Inter"),
+_dark = st.get_option("theme.base") == "dark"
+
+if _dark:
+    _paper = "#0f1117"
+    _plot  = "#0f1117"
+    _font_c = "#c4c7cf"
+    _grid  = "#2d3040"
+    _tpl   = "plotly_dark"
+    _map_style = "carto-darkmatter"
+else:
+    _paper = "#ffffff"
+    _plot  = "#ffffff"
+    _font_c = "#374151"
+    _grid  = "#f3f4f6"
+    _tpl   = "plotly_white"
+    _map_style = "carto-positron"
+
+PLOTLY_LAYOUT = dict(
+    template=_tpl,
+    paper_bgcolor=_paper,
+    plot_bgcolor=_plot,
+    font=dict(color=_font_c, family="Inter"),
     margin=dict(l=0, r=0, t=10, b=0),
 )
 
@@ -438,18 +555,39 @@ if page == "Tableau de bord":
 
     col1, col2, col3, col4 = st.columns(4)
     kpis = [
-        ("Prix moyen / m2", f"{pm2_mean:,.0f} EUR", f"Mediane : {pm2_med:,.0f} EUR/m2"),
-        ("Transactions", f"{n_trans:,}", f"sur {len(df_dvf_raw):,} au total"),
-        ("Budget / m2", f"{budget / surface_min:,.0f} EUR", f"Pour {surface_min} m2 min"),
-        ("Ecart-type", f"{pm2_std:,.0f} EUR", "Dispersion des prix/m2"),
+        (
+            "Prix moyen au m2",
+            f"{pm2_mean:,.0f} EUR/m2",
+            f"Mediane : {pm2_med:,.0f} EUR/m2",
+            "Prix de vente moyen par metre carre, calcule sur l'ensemble des transactions DVF filtrees.",
+        ),
+        (
+            "Transactions",
+            f"{n_trans:,} ventes",
+            f"sur {len(df_dvf_raw):,} au total",
+            "Nombre de ventes immobilieres enregistrees correspondant aux filtres appliques (type, budget, surface, quartier).",
+        ),
+        (
+            "Budget au m2",
+            f"{budget / surface_min:,.0f} EUR/m2",
+            f"Budget de {budget // 1000:,.0f}k EUR pour {surface_min} m2 min",
+            "Rapport entre votre budget et la surface minimum. Permet de comparer avec le prix moyen du marche.",
+        ),
+        (
+            "Ecart-type",
+            f"{pm2_std:,.0f} EUR/m2",
+            f"Moyenne a {pm2_mean:,.0f} EUR/m2",
+            "Dispersion des prix au m2 autour de la moyenne. Plus il est eleve, plus les prix varient entre les biens.",
+        ),
     ]
-    for col, (label, value, sub) in zip([col1, col2, col3, col4], kpis):
+    for col, (label, value, sub, desc) in zip([col1, col2, col3, col4], kpis):
         with col:
             st.markdown(f"""
             <div class="kpi-card">
               <div class="kpi-label">{label}</div>
               <div class="kpi-value">{value}</div>
               <div class="kpi-sub">{sub}</div>
+              <div class="kpi-desc">{desc}</div>
             </div>""", unsafe_allow_html=True)
 
     st.markdown('<div class="section-title">Distribution des prix au m2</div>', unsafe_allow_html=True)
@@ -470,11 +608,11 @@ if page == "Tableau de bord":
             fig.add_vline(x=pm2_med, line_dash="dot", line_color="#7c3aed",
                           annotation_text=f"Mediane {pm2_med:,.0f}",
                           annotation_font_color="#7c3aed")
-            fig.update_layout(**PLOTLY_LIGHT, height=320, barmode="overlay",
+            fig.update_layout(**PLOTLY_LAYOUT, height=320, barmode="overlay",
                                legend=dict(orientation="h", y=1.02),
                                xaxis_title="EUR/m2", yaxis_title="Nombre de biens",
-                               xaxis=dict(gridcolor="#f3f4f6"),
-                               yaxis=dict(gridcolor="#f3f4f6"))
+                               xaxis=dict(gridcolor=_grid),
+                               yaxis=dict(gridcolor=_grid))
             st.plotly_chart(fig, width="stretch")
 
     with col_b:
@@ -493,8 +631,8 @@ if page == "Tableau de bord":
             st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
             for k, v in rows.items():
                 c1, c2 = st.columns([1.3, 1])
-                c1.markdown(f"<small style='color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;font-size:0.7rem'>{k}</small>", unsafe_allow_html=True)
-                c2.markdown(f"<small style='color:#1a1a2e;font-weight:600'>{v}</small>", unsafe_allow_html=True)
+                c1.markdown(f"<small style='color:var(--nd-text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.03em;font-size:0.7rem'>{k}</small>", unsafe_allow_html=True)
+                c2.markdown(f"<small style='color:var(--nd-text);font-weight:600'>{v}</small>", unsafe_allow_html=True)
 
     if "quartier" in df_dvf.columns and "prix_m2" in df_dvf.columns:
         st.markdown('<div class="section-title">Prix moyen par quartier</div>', unsafe_allow_html=True)
@@ -509,12 +647,12 @@ if page == "Tableau de bord":
             name="Moyenne EUR/m2",
             text=q_stats["mean"].apply(lambda v: f"{v:,.0f} EUR"),
             textposition="outside",
-            textfont=dict(color="#374151", size=11),
+            textfont=dict(color=_font_c, size=11),
         ))
-        fig2.update_layout(**PLOTLY_LIGHT, height=280,
+        fig2.update_layout(**PLOTLY_LAYOUT, height=280,
                             xaxis_title="EUR/m2",
-                            xaxis=dict(gridcolor="#f3f4f6"),
-                            yaxis=dict(gridcolor="rgba(0,0,0,0)"))
+                            xaxis=dict(gridcolor=_grid),
+                            yaxis=dict(gridcolor=_grid))
         st.plotly_chart(fig2, width="stretch")
 
 
@@ -545,10 +683,10 @@ elif page == "Carte des prix":
             zoom=12, height=520, size_max=50,
         )
         fig_map.update_layout(
-            mapbox_style="carto-positron",
+            mapbox_style=_map_style,
             margin=dict(l=0, r=0, t=0, b=0),
-            paper_bgcolor="#ffffff",
-            coloraxis_colorbar=dict(title="EUR/m2", tickfont=dict(color="#374151"), title_font=dict(color="#374151")),
+            paper_bgcolor=_paper,
+            coloraxis_colorbar=dict(title="EUR/m2", tickfont=dict(color=_font_c), title_font=dict(color=_font_c)),
         )
         st.plotly_chart(fig_map, width="stretch")
         st.dataframe(
@@ -593,13 +731,20 @@ elif page == "Tendances":
                 name=f"Tendance ({beta:+.1f} EUR/mois)",
                 line=dict(color="#dc2626", width=2, dash="dash")))
             fig_trend.update_layout(
-                **PLOTLY_LIGHT, height=380,
+                **PLOTLY_LAYOUT, height=380,
                 legend=dict(orientation="h", y=1.05),
                 xaxis_title="Mois", yaxis_title="Prix moyen EUR/m2",
-                xaxis=dict(tickangle=45, gridcolor="#f3f4f6"),
-                yaxis=dict(gridcolor="#f3f4f6"))
+                xaxis=dict(tickangle=45, gridcolor=_grid),
+                yaxis=dict(gridcolor=_grid))
             st.plotly_chart(fig_trend, width="stretch")
-            st.metric("Tendance mensuelle", f"{beta:+.1f} EUR/m2/mois")
+            _trend_dir = "hausse" if beta > 0 else "baisse"
+            st.markdown(f"""
+            <div class="kpi-card" style="max-width:400px">
+              <div class="kpi-label">Tendance mensuelle</div>
+              <div class="kpi-value">{beta:+.1f} EUR/m2/mois</div>
+              <div class="kpi-sub">Marche en {_trend_dir}</div>
+              <div class="kpi-desc">Variation moyenne du prix au m2 d'un mois a l'autre, calculee par regression lineaire sur les donnees DVF.</div>
+            </div>""", unsafe_allow_html=True)
 
     if "type_bien" in df_dvf.columns and "prix_m2" in df_dvf.columns:
         st.markdown('<div class="section-title">Repartition par type de bien</div>', unsafe_allow_html=True)
@@ -609,19 +754,19 @@ elif page == "Tendances":
             color="type_bien", color_discrete_sequence=COLORS,
             template="plotly_white", height=340)
         fig_box.update_layout(
-            paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
-            font=dict(color="#374151"),
+            paper_bgcolor=_paper, plot_bgcolor=_plot,
+            font=dict(color=_font_c),
             margin=dict(l=0, r=0, t=10, b=0),
             showlegend=False,
             xaxis_title="Type de bien", yaxis_title="EUR/m2",
-            xaxis=dict(gridcolor="#f3f4f6"),
-            yaxis=dict(gridcolor="#f3f4f6"))
+            xaxis=dict(gridcolor=_grid),
+            yaxis=dict(gridcolor=_grid))
         st.plotly_chart(fig_box, width="stretch")
 
 
 elif page == "Opportunites":
     st.markdown('<div class="section-title">Analyse des opportunites</div>', unsafe_allow_html=True)
-    st.markdown("<p style='color:#6b7280;font-size:0.88rem'>Chaque annonce est comparee au prix median du marche DVF. Un score eleve indique un bien potentiellement sous-evalue.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:var(--nd-text-muted);font-size:0.88rem'>Chaque annonce est comparee au prix median du marche DVF. Un score eleve indique un bien potentiellement sous-evalue.</p>", unsafe_allow_html=True)
     if df_dvf is None or df_ann is None:
         _no_data_screen("Les donnees DVF et les annonces sont necessaires pour l'analyse des opportunites.")
         st.stop()
@@ -659,9 +804,9 @@ elif page == "Opportunites":
                   <div style="margin-bottom:0.4rem">
                     <span class="{sc_class}">{row['score']:.0f}/100 — {sc_label}</span>
                   </div>
-                  <div style="color:#1a1a2e;font-weight:700;font-size:1rem;margin-bottom:0.2rem">{prix_fmt}</div>
-                  <div style="color:#6b7280;font-size:0.82rem">{surface_fmt} {pieces} — {pm2_fmt}</div>
-                  <div style="color:#9ca3af;font-size:0.78rem;margin-top:0.15rem">{quartier}</div>
+                  <div style="color:var(--nd-text);font-weight:700;font-size:1rem;margin-bottom:0.2rem">{prix_fmt}</div>
+                  <div style="color:var(--nd-text-muted);font-size:0.82rem">{surface_fmt} {pieces} — {pm2_fmt}</div>
+                  <div style="color:var(--nd-text-faint);font-size:0.78rem;margin-top:0.15rem">{quartier}</div>
                   {"<a href='" + str(lien) + "' target='_blank' style='color:" + BLUE + ";font-size:0.78rem;text-decoration:none;font-weight:500'>Voir l annonce</a>" if pd.notna(lien) and lien else ""}
                 </div>""", unsafe_allow_html=True)
 
@@ -676,16 +821,16 @@ elif page == "Opportunites":
                          annotation_text="Seuil opportunite",
                          annotation_font_color=GREEN)
         fig_sc.update_layout(
-            paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
-            font=dict(color="#374151"),
+            paper_bgcolor=_paper, plot_bgcolor=_plot,
+            font=dict(color=_font_c),
             margin=dict(l=0, r=0, t=10, b=0),
             xaxis_title="Prix (EUR)", yaxis_title="Score",
-            xaxis=dict(gridcolor="#f3f4f6"),
-            yaxis=dict(gridcolor="#f3f4f6"))
+            xaxis=dict(gridcolor=_grid),
+            yaxis=dict(gridcolor=_grid))
         st.plotly_chart(fig_sc, width="stretch")
 
         st.markdown('<div class="section-title">Biens similaires — k-NN</div>', unsafe_allow_html=True)
-        st.markdown("<p style='color:#6b7280;font-size:0.85rem'>Selectionnez un bien pour identifier les 5 annonces les plus proches par surface et prix.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:var(--nd-text-muted);font-size:0.85rem'>Selectionnez un bien pour identifier les 5 annonces les plus proches par surface et prix.</p>", unsafe_allow_html=True)
 
         ann_valid = scored.dropna(subset=["prix", "surface"]).reset_index(drop=True)
         if len(ann_valid) >= 6:
@@ -711,9 +856,9 @@ elif page == "Opportunites":
                     lien = row.get("lien", "")
                     st.markdown(f"""
                     <div class="ann-card" style="font-size:0.8rem">
-                      <div style="color:#1a1a2e;font-weight:700">{prix_fmt}</div>
-                      <div style="color:#6b7280">{surface_fmt}</div>
-                      <div style="color:#9ca3af;font-size:0.72rem">{row.get('quartier','')}</div>
+                      <div style="color:var(--nd-text);font-weight:700">{prix_fmt}</div>
+                      <div style="color:var(--nd-text-muted)">{surface_fmt}</div>
+                      <div style="color:var(--nd-text-faint);font-size:0.72rem">{row.get('quartier','')}</div>
                       {"<a href='" + str(lien) + "' target='_blank' style='color:" + BLUE + ";font-size:0.72rem;text-decoration:none'>Voir</a>" if pd.notna(lien) and lien else ""}
                     </div>""", unsafe_allow_html=True)
 
@@ -728,22 +873,51 @@ elif page == "Analyse detaillee":
         pm2  = df_dvf["prix_m2"].dropna().tolist()
         surf = df_dvf["surface"].dropna().tolist()
 
+        _stat_labels = {
+            "min": ("Minimum", "Valeur la plus basse observee dans les transactions filtrees."),
+            "max": ("Maximum", "Valeur la plus haute observee dans les transactions filtrees."),
+            "mean": ("Moyenne", "Somme des valeurs divisee par le nombre de transactions."),
+            "median": ("Mediane", "Valeur centrale : 50%% des biens sont au-dessus, 50%% en dessous."),
+            "variance": ("Variance", "Mesure mathematique de la dispersion des valeurs autour de la moyenne."),
+            "std": ("Ecart-type", "Dispersion typique des valeurs. Plus il est grand, plus les prix sont heterogenes."),
+        }
+
         if pm2 and surf:
             col1, col2 = st.columns(2)
             with col1:
                 st.subheader("Prix au m2")
                 for k, v in describe(pm2).items():
-                    st.metric(k.capitalize(), f"{v:,.2f}")
+                    lbl, tip = _stat_labels.get(k, (k.capitalize(), ""))
+                    st.markdown(f"""
+                    <div class="kpi-card" style="margin-bottom:0.6rem">
+                      <div class="kpi-label">{lbl}</div>
+                      <div class="kpi-value">{v:,.0f} EUR/m2</div>
+                      <div class="kpi-desc">{tip}</div>
+                    </div>""", unsafe_allow_html=True)
             with col2:
                 st.subheader("Surface")
                 for k, v in describe(surf[:len(pm2)]).items():
-                    st.metric(k.capitalize(), f"{v:,.2f}")
+                    lbl, tip = _stat_labels.get(k, (k.capitalize(), ""))
+                    st.markdown(f"""
+                    <div class="kpi-card" style="margin-bottom:0.6rem">
+                      <div class="kpi-label">{lbl}</div>
+                      <div class="kpi-value">{v:,.0f} m2</div>
+                      <div class="kpi-desc">{tip}</div>
+                    </div>""", unsafe_allow_html=True)
 
             n_min = min(len(pm2), len(surf))
             if n_min >= 5:
                 corr = correlation(pm2[:n_min], surf[:n_min])
                 st.divider()
-                st.metric("Correlation surface / prix au m2", f"{corr:.4f}")
+                _corr_interp = "forte" if abs(corr) > 0.7 else "moderee" if abs(corr) > 0.4 else "faible"
+                _corr_dir = "negative" if corr < 0 else "positive"
+                st.markdown(f"""
+                <div class="kpi-card" style="max-width:500px">
+                  <div class="kpi-label">Correlation surface / prix au m2</div>
+                  <div class="kpi-value">{corr:.4f}</div>
+                  <div class="kpi-sub">Correlation {_corr_interp} {_corr_dir}</div>
+                  <div class="kpi-desc">Coefficient entre -1 et 1. Indique si la surface et le prix au m2 evoluent ensemble (positif) ou en sens inverse (negatif). Proche de 0 = pas de lien lineaire.</div>
+                </div>""", unsafe_allow_html=True)
 
             st.markdown('<div class="section-title">Regression : surface vers prix</div>', unsafe_allow_html=True)
             prix_list = df_dvf["prix"].dropna().tolist()
@@ -752,7 +926,14 @@ elif page == "Analyse detaillee":
             if n_min2 >= 10:
                 alpha, beta = least_squares_fit(surf_list[:n_min2], prix_list[:n_min2])
                 r2 = r_squared(alpha, beta, surf_list[:n_min2], prix_list[:n_min2])
-                st.info(f"**Modele** : Prix = {alpha:,.0f} + {beta:,.0f} x Surface  —  R2 = {r2:.3f}")
+                _r2_qual = "excellent" if r2 > 0.8 else "correct" if r2 > 0.5 else "faible"
+                st.markdown(f"""
+                <div class="kpi-card" style="margin-bottom:1rem">
+                  <div class="kpi-label">Modele de regression lineaire</div>
+                  <div class="kpi-value" style="font-size:1.1rem">Prix = {alpha:,.0f} EUR + {beta:,.0f} EUR/m2 x Surface</div>
+                  <div class="kpi-sub">R2 = {r2:.3f} — ajustement {_r2_qual}</div>
+                  <div class="kpi-desc">Le R2 mesure la qualite du modele (0 a 1). Alpha est le prix de base, beta le cout par m2 supplementaire. Plus le R2 est proche de 1, mieux le modele predit les prix reels.</div>
+                </div>""", unsafe_allow_html=True)
 
                 xs_plot = sorted(surf_list[:n_min2])
                 ys_pred = [predict(alpha, beta, x) for x in xs_plot]
@@ -766,22 +947,28 @@ elif page == "Analyse detaillee":
                     line=dict(color="#dc2626", width=2.5),
                     name=f"Regression (beta={beta:,.0f} EUR/m2)"))
                 fig_reg.update_layout(
-                    **PLOTLY_LIGHT, height=370,
+                    **PLOTLY_LAYOUT, height=370,
                     xaxis_title="Surface (m2)", yaxis_title="Prix (EUR)",
-                    xaxis=dict(gridcolor="#f3f4f6"),
-                    yaxis=dict(gridcolor="#f3f4f6"))
+                    xaxis=dict(gridcolor=_grid),
+                    yaxis=dict(gridcolor=_grid))
                 st.plotly_chart(fig_reg, width="stretch")
 
-                st.markdown("**Simulateur de prix**")
+                st.markdown('<div class="section-title">Simulateur de prix</div>', unsafe_allow_html=True)
+                st.markdown("<p style='color:var(--nd-text-muted);font-size:0.85rem'>Estimez le prix d'un bien en fonction de sa surface, a partir du modele de regression.</p>", unsafe_allow_html=True)
                 sim_surf = st.slider("Surface (m2)", 20, 200, 65)
                 sim_prix = predict(alpha, beta, sim_surf)
-                st.success(
-                    f"Surface de **{sim_surf} m2** — "
-                    f"Prix estime : **{sim_prix:,.0f} EUR** "
-                    f"({sim_prix/sim_surf:,.0f} EUR/m2)")
+                st.markdown(f"""
+                <div class="kpi-card">
+                  <div class="kpi-label">Estimation pour {sim_surf} m2</div>
+                  <div class="kpi-value">{sim_prix:,.0f} EUR</div>
+                  <div class="kpi-sub">{sim_prix/sim_surf:,.0f} EUR/m2</div>
+                  <div class="kpi-desc">Prix estime par le modele de regression lineaire. A comparer avec les prix reels du quartier pour identifier les opportunites.</div>
+                </div>""", unsafe_allow_html=True)
 
 st.markdown(f"""
 <div class="footer">
-  NidDouillet — Observatoire Immobilier Toulonnais — Donnees DVF data.gouv.fr — {datetime.now().strftime("%d/%m/%Y")}
+  NidDouillet — Observatoire Immobilier Toulonnais — Donnees DVF data.gouv.fr<br>
+  Mamoune NIDAM — Jimmy RIBEIRO — Lamiae ZRIOUALI — Matthias CARO-BECKER — Inde HADAOUI<br>
+  {datetime.now().strftime("%d/%m/%Y")}
 </div>
 """, unsafe_allow_html=True)
