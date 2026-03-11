@@ -412,6 +412,10 @@ def load_dvf():
             col_map[col] = "type_bien"
         elif "date" in lc and "mutation" in lc:
             col_map[col] = "date"
+        elif "zone" in lc or "quartier" in lc:
+            col_map[col] = "quartier"
+        elif "nombre_pieces" in lc or "nb_pieces" in lc:
+            col_map[col] = "pieces"
     df = df.rename(columns=col_map)
     if "commune" in df.columns:
         df = df[df["commune"].str.upper().str.contains("TOULON", na=False)]
@@ -472,6 +476,14 @@ with st.sidebar:
 
     surface_min = st.slider("Surface min (m²)", 10, 150, 30)
 
+    quartier_options = ["Tous"] + sorted(df_dvf_raw["quartier"].dropna().unique().tolist()) \
+        if dvf_ok and "quartier" in df_dvf_raw.columns else ["Tous"]
+    quartier_filter = st.selectbox("Quartier", quartier_options)
+
+    pieces_options = ["Tous"] + sorted(df_dvf_raw["pieces"].dropna().astype(int).unique().tolist()) \
+        if dvf_ok and "pieces" in df_dvf_raw.columns else ["Tous"]
+    pieces_filter = st.selectbox("Nombre de pièces", pieces_options)
+
     st.divider()
     dvf_label = f"<b style='color:#6b7a8d'>{len(df_dvf_raw):,}</b>" if dvf_ok else "<b style='color:#e05c5c'>—</b>"
     ann_label  = f"<b style='color:#6b7a8d'>{len(df_ann_raw):,}</b>" if ann_ok  else "<b style='color:#e05c5c'>—</b>"
@@ -494,6 +506,10 @@ def apply_filters(df):
         d = d[d["prix"] <= budget]
     if "surface" in d.columns:
         d = d[d["surface"] >= surface_min]
+    if quartier_filter != "Tous" and "quartier" in d.columns:
+        d = d[d["quartier"] == quartier_filter]
+    if pieces_filter != "Tous" and "pieces" in d.columns:
+        d = d[d["pieces"] == int(pieces_filter)]
     return d
 
 df_dvf = apply_filters(df_dvf_raw)
@@ -632,14 +648,9 @@ elif page == "🗺️ Carte des prix":
         st.stop()
 
     COORDS = {
-        "Centre":        (43.1242, 5.9280),
-        "Le Mourillon":  (43.1168, 5.9450),
-        "Le Jonquet":    (43.1350, 5.9100),
-        "La Serinette":  (43.1450, 5.9200),
-        "Sainte-Musse":  (43.1300, 5.9600),
-        "Cap Brun":      (43.1050, 5.9550),
-        "La Rode":       (43.1380, 5.9400),
-        "Pont du Las":   (43.1480, 5.9350),
+        "Centre / Littoral": (43.1242, 5.9300),
+        "Ouest Toulon":      (43.1400, 5.9050),
+        "Est Toulon":        (43.1250, 5.9550),
     }
 
     if "quartier" in df_dvf.columns and "prix_m2" in df_dvf.columns:
