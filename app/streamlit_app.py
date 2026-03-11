@@ -771,26 +771,43 @@ elif page == "🔍 Scoring Opportunités":
         market_pm2 = df_dvf["prix_m2"].dropna().tolist()
         scored = df_ann.copy()
         scored["score"] = scored["prix_m2"].apply(
-            lambda p: opportunity_score(p, market_pm2) if not np.isnan(p) else 0)
+            lambda p: opportunity_score(p, market_pm2) if pd.notna(p) else 0)
         scored = scored.sort_values("score", ascending=False)
 
-        def fmt_score(s):
+        def _score_badge(s):
             if s >= 70:
-                return f'<span class="score-high">⭐ {s:.0f}/100</span>'
+                return "score-high", "Opportunité"
             elif s >= 45:
-                return f'<span class="score-medium">🟡 {s:.0f}/100</span>'
-            else:
-                return f'<span class="score-low">🔴 {s:.0f}/100</span>'
+                return "score-medium", "Prix marché"
+            return "score-low", "Surévalué"
 
-        top = scored.head(10).copy()
-        top["Score"]   = top["score"].apply(fmt_score)
-        top["Prix"]    = top["prix"].apply(lambda v: f"{v:,.0f} €")
-        top["€/m²"]    = top["prix_m2"].apply(lambda v: f"{v:,.0f}")
-        top["Surface"] = top["surface"].apply(lambda v: f"{v:.0f} m²")
-
-        cols_show = [c for c in ["quartier", "type_bien", "Surface", "Prix", "€/m²", "Score"]
-                     if c in top.columns]
-        st.markdown(top[cols_show].to_html(escape=False, index=False), unsafe_allow_html=True)
+        top = scored.head(12)
+        cols = st.columns(3)
+        for i, (_, row) in enumerate(top.iterrows()):
+            with cols[i % 3]:
+                photo = row.get("photo_1", "")
+                if pd.notna(photo) and photo:
+                    st.image(photo, use_container_width=True)
+                sc_class, sc_label = _score_badge(row["score"])
+                titre = row.get("titre", "")
+                if pd.notna(titre) and len(str(titre)) > 60:
+                    titre = str(titre)[:60] + "…"
+                prix_fmt = f"{row['prix']:,.0f} €" if pd.notna(row.get("prix")) else "N/A"
+                pm2_fmt = f"{row['prix_m2']:,.0f} €/m²" if pd.notna(row.get("prix_m2")) else ""
+                surface_fmt = f"{row['surface']:.0f} m²" if pd.notna(row.get("surface")) else ""
+                quartier = row.get("quartier", "")
+                lien = row.get("lien", "")
+                st.markdown(f"""
+                <div style="background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:1rem;margin-bottom:1rem">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+                    <span class="{sc_class}">{row['score']:.0f}/100 · {sc_label}</span>
+                  </div>
+                  <div style="color:#f5e6c8;font-weight:700;font-size:0.95rem;margin-bottom:0.3rem">{prix_fmt}</div>
+                  <div style="color:#6b7a8d;font-size:0.8rem">{surface_fmt} · {pm2_fmt}</div>
+                  <div style="color:#4a5a6a;font-size:0.75rem;margin-top:0.2rem">{quartier}</div>
+                  <div style="color:#3a4a5a;font-size:0.72rem;margin-top:0.4rem">{titre}</div>
+                  {"<a href='" + str(lien) + "' target='_blank' style='color:#ffb43c;font-size:0.75rem;text-decoration:none'>Voir l'annonce →</a>" if pd.notna(lien) and lien else ""}
+                </div>""", unsafe_allow_html=True)
 
         st.markdown('<div class="section-title">💹 Prix vs Score</div>', unsafe_allow_html=True)
         fig_sc = px.scatter(
