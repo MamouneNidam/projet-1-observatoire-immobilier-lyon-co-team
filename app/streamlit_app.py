@@ -22,7 +22,7 @@ from analysis.stats import (
     correlation, percentile, describe
 )
 from analysis.regression import least_squares_fit, predict, r_squared
-from analysis.scoring import opportunity_score
+from analysis.scoring import opportunity_score, knn_similar
 
 # ─── Config page ────────────────────────────────────────────────────────────
 
