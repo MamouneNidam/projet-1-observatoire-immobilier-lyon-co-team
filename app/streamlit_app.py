@@ -433,10 +433,24 @@ def load_dvf():
 
 @st.cache_data(show_spinner="Chargement des annonces…")
 def load_annonces():
-    ann_path = ROOT / "data" / "annonces.csv"
-    if not ann_path.exists():
-        return None  # Pas de données disponibles
-    return pd.read_csv(ann_path, low_memory=False)
+    for name in ["annonces_toulon.csv", "annonces.csv", "annonces_actuelles.csv"]:
+        p = ROOT / "data" / name
+        if p.exists():
+            df = pd.read_csv(p, low_memory=False)
+            if "prix" in df.columns:
+                df["prix"] = df["prix"].astype(str).str.replace(r"[^\d]", "", regex=True)
+                df["prix"] = pd.to_numeric(df["prix"], errors="coerce")
+            if "surface" in df.columns:
+                df["surface"] = pd.to_numeric(df["surface"], errors="coerce")
+            if "prix_m2" in df.columns:
+                df["prix_m2"] = df["prix_m2"].astype(str).str.replace(r"[^\d]", "", regex=True)
+                df["prix_m2"] = pd.to_numeric(df["prix_m2"], errors="coerce")
+            elif "prix" in df.columns and "surface" in df.columns:
+                df["prix_m2"] = df["prix"] / df["surface"]
+            if "nb_pieces" in df.columns and "pieces" not in df.columns:
+                df = df.rename(columns={"nb_pieces": "pieces"})
+            return df
+    return None
 
 
 # ─── Sidebar ─────────────────────────────────────────────────────────────────
