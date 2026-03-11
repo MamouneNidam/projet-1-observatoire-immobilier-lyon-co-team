@@ -33,6 +33,18 @@ def convertir_en_float(valeur):
     except ValueError:
         return None
 
+def determiner_zone(code_postal):
+    """
+    Approximation des zones de Toulon via code postal
+    """
+    if code_postal == "83000":
+        return "Centre / Littoral"
+    elif code_postal == "83100":
+        return "Est Toulon"
+    elif code_postal == "83200":
+        return "Ouest Toulon"
+    else:
+        return "Zone inconnue"
 
 def lire_et_filtrer_dvf():
     """
@@ -63,7 +75,8 @@ def lire_et_filtrer_dvf():
                 # On doit convertir le prix et la surface
                 prix = convertir_en_float(row.get("Valeur fonciere"))
                 surface = convertir_en_float(row.get("Surface reelle bati"))
-
+                pieces = convertir_en_float(row.get("Nombre pieces principales"))
+                
                 # On ignore les lignes inexploitables
                 if prix is None or surface is None:
                     continue
@@ -74,11 +87,31 @@ def lire_et_filtrer_dvf():
                 # Calcul du prix au m²
                 prix_m2 = prix / surface
 
+                 # Infos adresse
+                numero_voie = row.get("No voie")
+                type_voie = row.get("Type de voie")
+                voie = row.get("Voie")
+                code_postal = row.get("Code postal")
+
+                adresse_complete = f"{numero_voie or ''} {type_voie or ''} {voie or ''}".strip()
+
+                zone = determiner_zone(code_postal)
+
                 # Ajout de la ligne au propre
                 resultats.append({
                     "date_mutation": row.get("Date mutation"),
                     "commune": row.get("Commune"),
+                    "code_postal": code_postal,
+                    "zone_toulon": zone,
+
+                    "numero_voie": numero_voie,
+                    "type_voie": type_voie,
+                    "voie": voie,
+                    "adresse_complete": adresse_complete,
+
                     "type_local": row.get("Type local"),
+                    "nombre_pieces": pieces,
+
                     "surface_reelle_bati": round(surface, 2),
                     "valeur_fonciere": round(prix, 2),
                     "prix_m2": round(prix_m2, 2)
@@ -94,7 +127,17 @@ def ecrire_csv(resultats):
     colonnes = [
         "date_mutation",
         "commune",
+        "code_postal",
+        "zone_toulon",
+
+        "numero_voie",
+        "type_voie",
+        "voie",
+        "adresse_complete",
+
         "type_local",
+        "nombre_pieces",
+        
         "surface_reelle_bati",
         "valeur_fonciere",
         "prix_m2"

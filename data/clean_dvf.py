@@ -2,6 +2,7 @@ import csv
 
 # Fichier source
 INPUT_FILE = "data/dvf_toulon.csv"
+
 # Fichier de sortie
 OUTPUT_FILE = "data/dvf_toulon_clean.csv"
 
@@ -34,6 +35,7 @@ def nettoyer_dvf():
             prix = convertir_en_float(row.get("valeur_fonciere"))
             surface = convertir_en_float(row.get("surface_reelle_bati"))
             prix_m2 = convertir_en_float(row.get("prix_m2"))
+            nombre_pieces = convertir_en_float(row.get("nombre_pieces"))
 
             # Ignore les lignes inexploitables
             if prix is None or surface is None or prix_m2 is None:
@@ -50,11 +52,25 @@ def nettoyer_dvf():
             if surface < 10 or surface > 500:
                 continue
 
+            # Nettoyage du nombre de pièces
+            if nombre_pieces is not None:
+                nombre_pieces = int(nombre_pieces)
+
             # On garde la ligne nettoyée
             resultats.append({
                 "date_mutation": row.get("date_mutation"),
                 "commune": row.get("commune"),
+                "code_postal": row.get("code_postal"),
+                "zone_toulon": row.get("zone_toulon"),
+
+                "numero_voie": row.get("numero_voie"),
+                "type_voie": row.get("type_voie"),
+                "voie": row.get("voie"),
+                "adresse_complete": row.get("adresse_complete"),
+
                 "type_local": row.get("type_local"),
+                "nombre_pieces": nombre_pieces,
+
                 "surface_reelle_bati": round(surface, 2),
                 "valeur_fonciere": round(prix, 2),
                 "prix_m2": round(prix_m2, 2)
@@ -70,7 +86,17 @@ def ecrire_csv(resultats):
     colonnes = [
         "date_mutation",
         "commune",
+        "code_postal",
+        "zone_toulon",
+
+        "numero_voie",
+        "type_voie",
+        "voie",
+        "adresse_complete",
+
         "type_local",
+        "nombre_pieces",
+        
         "surface_reelle_bati",
         "valeur_fonciere",
         "prix_m2"
