@@ -476,6 +476,14 @@ with st.sidebar:
 
     surface_min = st.slider("Surface min (m²)", 10, 150, 30)
 
+    quartier_options = ["Tous"] + sorted(df_dvf_raw["quartier"].dropna().unique().tolist()) \
+        if dvf_ok and "quartier" in df_dvf_raw.columns else ["Tous"]
+    quartier_filter = st.selectbox("Quartier", quartier_options)
+
+    pieces_options = ["Tous"] + sorted(df_dvf_raw["pieces"].dropna().astype(int).unique().tolist()) \
+        if dvf_ok and "pieces" in df_dvf_raw.columns else ["Tous"]
+    pieces_filter = st.selectbox("Nombre de pièces", pieces_options)
+
     st.divider()
     dvf_label = f"<b style='color:#6b7a8d'>{len(df_dvf_raw):,}</b>" if dvf_ok else "<b style='color:#e05c5c'>—</b>"
     ann_label  = f"<b style='color:#6b7a8d'>{len(df_ann_raw):,}</b>" if ann_ok  else "<b style='color:#e05c5c'>—</b>"
@@ -498,6 +506,10 @@ def apply_filters(df):
         d = d[d["prix"] <= budget]
     if "surface" in d.columns:
         d = d[d["surface"] >= surface_min]
+    if quartier_filter != "Tous" and "quartier" in d.columns:
+        d = d[d["quartier"] == quartier_filter]
+    if pieces_filter != "Tous" and "pieces" in d.columns:
+        d = d[d["pieces"] == int(pieces_filter)]
     return d
 
 df_dvf = apply_filters(df_dvf_raw)
