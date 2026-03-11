@@ -828,6 +828,40 @@ elif page == "🔍 Scoring Opportunités":
             yaxis=dict(gridcolor="rgba(255,255,255,0.04)"))
         st.plotly_chart(fig_sc, width="stretch")
 
+        st.markdown('<div class="section-title">🏘️ Biens similaires (k-NN from scratch)</div>', unsafe_allow_html=True)
+        st.markdown("<p style='color:#6b7a8d;font-size:0.9rem'>Sélectionnez un bien pour trouver les 5 annonces les plus proches par surface et prix.</p>", unsafe_allow_html=True)
+
+        ann_valid = scored.dropna(subset=["prix", "surface"]).reset_index(drop=True)
+        if len(ann_valid) >= 6:
+            ann_labels = [f"{r['prix']:,.0f}€ · {r['surface']:.0f}m² · {r.get('quartier','')}" for _, r in ann_valid.iterrows()]
+            selected_idx = st.selectbox("Choisir un bien", range(len(ann_labels)), format_func=lambda i: ann_labels[i])
+
+            target = [ann_valid.iloc[selected_idx]["surface"], ann_valid.iloc[selected_idx]["prix"]]
+            dataset = ann_valid[["surface", "prix"]].values.tolist()
+            labels = list(range(len(ann_valid)))
+
+            neighbors = knn_similar(target, dataset, labels, k=6)
+            neighbors = [n for n in neighbors if n != selected_idx][:5]
+
+            st.markdown(f"<p style='color:#c8bfad;font-size:0.85rem;margin-top:1rem'>5 biens les plus similaires à <b>{ann_labels[selected_idx]}</b></p>", unsafe_allow_html=True)
+            n_cols = st.columns(5)
+            for i, idx in enumerate(neighbors):
+                row = ann_valid.iloc[idx]
+                with n_cols[i]:
+                    photo = row.get("photo_1", "")
+                    if pd.notna(photo) and photo:
+                        st.image(photo, use_container_width=True)
+                    prix_fmt = f"{row['prix']:,.0f} €" if pd.notna(row.get("prix")) else ""
+                    surface_fmt = f"{row['surface']:.0f} m²" if pd.notna(row.get("surface")) else ""
+                    lien = row.get("lien", "")
+                    st.markdown(f"""
+                    <div style="background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0.8rem;font-size:0.8rem">
+                      <div style="color:#f5e6c8;font-weight:700">{prix_fmt}</div>
+                      <div style="color:#6b7a8d">{surface_fmt}</div>
+                      <div style="color:#4a5a6a;font-size:0.72rem">{row.get('quartier','')}</div>
+                      {"<a href='" + str(lien) + "' target='_blank' style='color:#ffb43c;font-size:0.72rem;text-decoration:none'>Voir →</a>" if pd.notna(lien) and lien else ""}
+                    </div>""", unsafe_allow_html=True)
+
 
 # ─── PAGE : STATS AVANCÉES ────────────────────────────────────────────────────
 
