@@ -412,6 +412,10 @@ def load_dvf():
             col_map[col] = "type_bien"
         elif "date" in lc and "mutation" in lc:
             col_map[col] = "date"
+        elif "zone" in lc or "quartier" in lc:
+            col_map[col] = "quartier"
+        elif "nombre_pieces" in lc or "nb_pieces" in lc:
+            col_map[col] = "pieces"
     df = df.rename(columns=col_map)
     if "commune" in df.columns:
         df = df[df["commune"].str.upper().str.contains("TOULON", na=False)]
