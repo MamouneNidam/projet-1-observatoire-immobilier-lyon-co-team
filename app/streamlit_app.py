@@ -648,14 +648,9 @@ elif page == "🗺️ Carte des prix":
         st.stop()
 
     COORDS = {
-        "Centre":        (43.1242, 5.9280),
-        "Le Mourillon":  (43.1168, 5.9450),
-        "Le Jonquet":    (43.1350, 5.9100),
-        "La Serinette":  (43.1450, 5.9200),
-        "Sainte-Musse":  (43.1300, 5.9600),
-        "Cap Brun":      (43.1050, 5.9550),
-        "La Rode":       (43.1380, 5.9400),
-        "Pont du Las":   (43.1480, 5.9350),
+        "Centre / Littoral": (43.1242, 5.9300),
+        "Ouest Toulon":      (43.1400, 5.9050),
+        "Est Toulon":        (43.1250, 5.9550),
     }
 
     if "quartier" in df_dvf.columns and "prix_m2" in df_dvf.columns:
